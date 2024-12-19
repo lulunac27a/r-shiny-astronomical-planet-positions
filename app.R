@@ -84,7 +84,7 @@ server <- function(input, output) {
         time <- abs(time)
         hours <- floor(time)
         minutes <- (time - hours) * 60
-        return(paste(sign, formatC(hours, width = 2, flag = 0), ":", formatC(minutes, width = 2, flag = 0), sep = ""))
+        return(sprintf("%s%02d:%05.2f", sign, hours, minutes))
     }
     
     output$dateTime <- renderText({
