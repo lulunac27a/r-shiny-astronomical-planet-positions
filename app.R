@@ -72,7 +72,7 @@ server <- function(input, output) {
     altitude_azimuth <- function(latitude, declination, time) {
         hour_angle <- (time - 12) * 15
         altitude <- asin(sin(latitude * pi / 180) * sin(declination * pi / 180) + cos(latitude * pi / 180) * cos(declination * pi / 180) * cos(hour_angle * pi / 180)) * 180 / pi
-        azimuth <- acos((sin(declination * pi / 180) - sin(altitude * pi / 180) * sin(latitude * pi / 180)) / (cos(altitude * pi / 180) * cos(latitude * pi / 180))) * 180 / pi
+        azimuth <- acos(min(1, max(-1, (sin(declination * pi / 180) - sin(altitude * pi / 180) * sin(latitude * pi / 180)) / (cos(altitude * pi / 180) * cos(latitude * pi / 180))))) * 180 / pi
         if(hour_angle > 0) {
             azimuth <- 360 - azimuth
         }
