@@ -64,8 +64,8 @@ server <- function(input, output) {
         sun_right_ascension <- longitude_to_right_ascension(sun_longitude(input$date))
         planet_right_ascension <- longitude_to_right_ascension(planet_longitude(input$date, elongation))
         hour_angle <- acos(-tan(latitude * pi / 180) * tan(declination * pi / 180)) * 180 / pi
-        rise <- 12 - hour_angle / 15 - (sun_right_ascension - planet_right_ascension) / 360 * 24
-        set <- 12 + hour_angle / 15 - (sun_right_ascension - planet_right_ascension) / 360 * 24
+        rise <- (12 - hour_angle / 15 - (sun_right_ascension - planet_right_ascension) / 360 * 24) %% 24
+        set <- (12 + hour_angle / 15 - (sun_right_ascension - planet_right_ascension) / 360 * 24) %% 24
         return(list(rise = rise, set = set))
     }
 
