@@ -1,6 +1,6 @@
 # Astronomical Planet Positions with Rise and Set Times and Sun
 
-This is a Shiny app that displays the rising and setting times of the sun and the planet. It can also show the position of the sun and the planet. You can set the latitude, date, time (hour angle) and the planet elongation.
+This is a Shiny app that displays the rising and setting times of the sun and the planet. It can also show the position of the sun and the planet. Users can set the latitude, date, time (hour angle) and the planet elongation.
 
 ## Getting Started
 
