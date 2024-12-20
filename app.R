@@ -11,6 +11,8 @@ ui <- fluidPage(titlePanel("Astronomical Planet Positions with Rise and Set Time
             "Latitude", min = -90, max = 90, value = 0, step = 0.01)  #latitude input
 , sliderInput("elongation", "Elongation",
             min = -180, max = 180, value = 0, step = 0.01)  #planet elongation angle input
+, checkboxInput("refraction",
+            "Use atmospheric refraction", value = FALSE)  #atmospheric refraction input
 ), mainPanel(textOutput("dateTime")  #date and time output
 , textOutput("sunPosition")  #sun position output
 , textOutput("sunRiseSet")  #sun rise and set time output
@@ -65,8 +67,15 @@ server <- function(input, output) {
 
     sun_rise_set <- function(latitude, declination) {
         # get sunrise and sunset times
-        hour_angle <- acos(-tan(latitude * pi/180) * tan(declination *
-            pi/180)) * 180/pi
+        if (input$refraction) {
+            hour_angle <- acos(cos(-0.8333 * pi/180) - sin(latitude *
+                pi/180) * sin(declination * pi/180))/(cos(latitude *
+                pi/180) * cos(declination * pi/180)) * 180/pi
+            # use -0.8333 degrees of sun altitude
+        } else {
+            hour_angle <- acos(-tan(latitude * pi/180) * tan(declination *
+                pi/180)) * 180/pi
+        }
         # in degrees
         sunrise <- 12 - hour_angle/15
         sunset <- 12 + hour_angle/15
@@ -95,8 +104,15 @@ server <- function(input, output) {
         planet_right_ascension <- longitude_to_right_ascension(planet_longitude(input$date,
             elongation))
         # in degrees
-        hour_angle <- acos(-tan(latitude * pi/180) * tan(declination *
-            pi/180)) * 180/pi
+        if (input$refraction) {
+            hour_angle <- acos(cos(-0.5667 * pi/180) - sin(latitude *
+                pi/180) * sin(declination * pi/180))/(cos(latitude *
+                pi/180) * cos(declination * pi/180)) * 180/pi
+            # use -0.5667 degrees of sun altitude
+        } else {
+            hour_angle <- acos(-tan(latitude * pi/180) * tan(declination *
+                pi/180)) * 180/pi
+        }
         # in degrees
         rise <- (12 - hour_angle/15 - (sun_right_ascension -
             planet_right_ascension)/360 * 24)%%24
