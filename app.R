@@ -10,14 +10,14 @@ ui <- fluidPage(titlePanel("Astronomical Planet Positions with Rise and Set Time
 , sliderInput("latitude",
             "Latitude", min = -90, max = 90, value = 0, step = 0.01)  #latitude input
 , sliderInput("elongation", "Elongation",
-            min = -180, max = 180, value = 0, step = 0.01)  #planet elongation input
+            min = -180, max = 180, value = 0, step = 0.01)  #planet elongation angle input
 ), mainPanel(textOutput("dateTime")  #date and time output
 , textOutput("sunPosition")  #sun position output
-, textOutput("sunRiseSet")  #sun rise and set output
+, textOutput("sunRiseSet")  #sun rise and set time output
 , textOutput("planetPosition")  #planet position output
-, textOutput("planetRiseSet")  #planet rise and set output
-, textOutput("sunAltitudeAzimuth")  #sun altitude and azimuth output
-, textOutput("planetAltitudeAzimuth")  #planet altitude and azimuth output
+, textOutput("planetRiseSet")  #planet rise and set time output
+, textOutput("sunAltitudeAzimuth")  #sun altitude and azimuth angle output
+, textOutput("planetAltitudeAzimuth")  #planet altitude and azimuth angle output
 )))
 # define server component
 server <- function(input, output) {
@@ -149,7 +149,7 @@ server <- function(input, output) {
     })
 
     output$sunRiseSet <- renderText({
-        # sun rise and set output
+        # sun rise and set time output
         date <- input$date
         latitude <- input$latitude
         # latitude input
@@ -184,7 +184,7 @@ server <- function(input, output) {
         # planet position output
         date <- input$date
         elongation <- input$elongation
-        # planet elongation input
+        # planet elongation angle input
         longitude <- planet_longitude(date, elongation)
         declination <- planet_declination(date, elongation)
         right_ascension <- longitude_to_right_ascension(longitude)
@@ -194,7 +194,7 @@ server <- function(input, output) {
     })
 
     output$planetRiseSet <- renderText({
-        # planet rise and set output
+        # planet rise and set time output
         date <- input$date
         latitude <- input$latitude
         elongation <- input$elongation
