@@ -68,7 +68,7 @@ server <- function(input, output) {
     sun_rise_set <- function(latitude, declination) {
         # get sunrise and sunset times
         if (input$refraction) {
-            hour_angle <- acos(cos((-50/60) * pi/180) - sin(latitude *
+            hour_angle <- acos(sin((-50/60) * pi/180) - sin(latitude *
                 pi/180) * sin(declination * pi/180))/(cos(latitude *
                 pi/180) * cos(declination * pi/180)) * 180/pi
             # use minus 50 minutes of sun altitude
@@ -105,7 +105,7 @@ server <- function(input, output) {
             elongation))
         # convert this in degrees
         if (input$refraction) {
-            hour_angle <- acos(cos((-34/60) * pi/180) - sin(latitude *
+            hour_angle <- acos(sin((-34/60) * pi/180) - sin(latitude *
                 pi/180) * sin(declination * pi/180))/(cos(latitude *
                 pi/180) * cos(declination * pi/180)) * 180/pi
             # use minus 34 minutes of sun altitude
