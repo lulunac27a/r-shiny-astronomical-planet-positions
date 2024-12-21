@@ -49,20 +49,20 @@ server <- function(input, output) {
     sun_longitude <- function(date) {
         # get sun longitude based on day of year (date)
         return((date - 80) * 360/365)
-        # in degrees
+        # convert this in degrees
     }
 
     longitude_to_right_ascension <- function(longitude) {
         # convert ecliptic longitude to right ascension
         return(atan2(sin(longitude * pi/180) * cos((23 + 26/60) *
             pi/180), cos(longitude * pi/180)) * 180/pi)
-        # in degrees
+        # convert this in degrees
     }
 
     sun_declination <- function(date) {
         return(asin(sin((23 + 26/60) * pi/180) * sin(sun_longitude(date) *
             pi/180)) * 180/pi)
-        # in degrees
+        # convert this in degrees
     }
 
     sun_rise_set <- function(latitude, declination) {
@@ -76,7 +76,7 @@ server <- function(input, output) {
             hour_angle <- acos(-tan(latitude * pi/180) * tan(declination *
                 pi/180)) * 180/pi
         }
-        # in degrees
+        # convert this in degrees
         sunrise <- 12 - hour_angle/15
         sunset <- 12 + hour_angle/15
         return(list(sunrise = sunrise, sunset = sunset))
@@ -86,24 +86,24 @@ server <- function(input, output) {
         # get planet longitude based on day of year (date)
         # and planet elongation
         return((date - 80) * 360/365 + elongation)
-        # in degrees
+        # convert this in degrees
     }
 
     planet_declination <- function(date, elongation) {
         # get planet declination based on planet longitude
         return(asin(sin((23 + 26/60) * pi/180) * sin(planet_longitude(date,
             elongation) * pi/180)) * 180/pi)
-        # in degrees
+        # convert this in degrees
     }
 
     planet_rise_set <- function(latitude, declination, elongation) {
         # get planet rise and set times based on latitude,
         # declination and planet elongation
         sun_right_ascension <- longitude_to_right_ascension(sun_longitude(input$date))
-        # in degrees
+        # convert this in degrees
         planet_right_ascension <- longitude_to_right_ascension(planet_longitude(input$date,
             elongation))
-        # in degrees
+        # convert this in degrees
         if (input$refraction) {
             hour_angle <- acos(cos((-34/60) * pi/180) - sin(latitude *
                 pi/180) * sin(declination * pi/180))/(cos(latitude *
@@ -113,13 +113,13 @@ server <- function(input, output) {
             hour_angle <- acos(-tan(latitude * pi/180) * tan(declination *
                 pi/180)) * 180/pi
         }
-        # in degrees
+        # convert this in degrees
         rise <- (12 - hour_angle/15 - (sun_right_ascension -
             planet_right_ascension)/360 * 24)%%24
-        # in hours
+        # convert this in hours
         set <- (12 + hour_angle/15 - (sun_right_ascension - planet_right_ascension)/360 *
             24)%%24
-        # in hours
+        # convert this in hours
         return(list(rise = rise, set = set))
     }
 
@@ -127,15 +127,15 @@ server <- function(input, output) {
         # get altitude and azimuth based on latitude,
         # declination and time (hour angle)
         hour_angle <- (time - 12) * 15
-        # in hours
+        # convert this in hours
         altitude <- asin(sin(latitude * pi/180) * sin(declination *
             pi/180) + cos(latitude * pi/180) * cos(declination *
             pi/180) * cos(hour_angle * pi/180)) * 180/pi
-        # in degrees
+        # convert this in degrees
         azimuth <- acos(min(1, max(-1, (sin(declination * pi/180) -
             sin(altitude * pi/180) * sin(latitude * pi/180))/(cos(altitude *
             pi/180) * cos(latitude * pi/180))))) * 180/pi
-        # in degrees
+        # convert this in degrees
         if (hour_angle > 0) {
             azimuth <- 360 - azimuth
         }
