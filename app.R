@@ -54,13 +54,13 @@ server <- function(input, output) {
 
     longitude_to_right_ascension <- function(longitude) {
         # convert ecliptic longitude to right ascension
-        return(atan2(sin(longitude * pi/180) * cos(23.45 * pi/180),
-            cos(longitude * pi/180)) * 180/pi)
+        return(atan2(sin(longitude * pi/180) * cos((23 + 26/60) *
+            pi/180), cos(longitude * pi/180)) * 180/pi)
         # in degrees
     }
 
     sun_declination <- function(date) {
-        return(asin(sin(23.44 * pi/180) * sin(sun_longitude(date) *
+        return(asin(sin((23 + 26/60) * pi/180) * sin(sun_longitude(date) *
             pi/180)) * 180/pi)
         # in degrees
     }
@@ -68,10 +68,10 @@ server <- function(input, output) {
     sun_rise_set <- function(latitude, declination) {
         # get sunrise and sunset times
         if (input$refraction) {
-            hour_angle <- acos(cos(-0.8333 * pi/180) - sin(latitude *
+            hour_angle <- acos(cos((-50/60) * pi/180) - sin(latitude *
                 pi/180) * sin(declination * pi/180))/(cos(latitude *
                 pi/180) * cos(declination * pi/180)) * 180/pi
-            # use -0.8333 degrees of sun altitude
+            # use minus 50 minutes of sun altitude
         } else {
             hour_angle <- acos(-tan(latitude * pi/180) * tan(declination *
                 pi/180)) * 180/pi
@@ -91,7 +91,7 @@ server <- function(input, output) {
 
     planet_declination <- function(date, elongation) {
         # get planet declination based on planet longitude
-        return(asin(sin(23.44 * pi/180) * sin(planet_longitude(date,
+        return(asin(sin((23 + 26/60) * pi/180) * sin(planet_longitude(date,
             elongation) * pi/180)) * 180/pi)
         # in degrees
     }
@@ -105,10 +105,10 @@ server <- function(input, output) {
             elongation))
         # in degrees
         if (input$refraction) {
-            hour_angle <- acos(cos(-0.5667 * pi/180) - sin(latitude *
+            hour_angle <- acos(cos((-34/60) * pi/180) - sin(latitude *
                 pi/180) * sin(declination * pi/180))/(cos(latitude *
                 pi/180) * cos(declination * pi/180)) * 180/pi
-            # use -0.5667 degrees of sun altitude
+            # use minus 34 minutes of sun altitude
         } else {
             hour_angle <- acos(-tan(latitude * pi/180) * tan(declination *
                 pi/180)) * 180/pi
