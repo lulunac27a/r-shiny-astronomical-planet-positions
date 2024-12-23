@@ -4,6 +4,6 @@ This is a Shiny app that displays the rising and setting times of the sun and th
 
 ## Getting Started
 
-1. Clone the repository to your local machine.
+1. Clone the repository to your computer.
 2. Install the required packages by running `install.packages("shiny")`.
 3. Run the app by running `Rscript app.R`.
