@@ -171,8 +171,22 @@ server <- function(input, output) {
         # latitude input
         declination <- sun_declination(date)
         rise_set <- sun_rise_set(latitude, declination)
+        planet_rising_time <- rise_set$sunrise + 24/360 * (longitude_to_right_ascension(planet_longitude(date,
+            input$elongation)) - longitude_to_right_ascension(sun_longitude(date)))
+        # planet rising time
+        planet_setting_time <- rise_set$sunset + 24/360 * (longitude_to_right_ascension(planet_longitude(date,
+            input$elongation)) - longitude_to_right_ascension(sun_longitude(date)))
+        # planet setting time
+        planet_rising_altitude <- altitude_azimuth(latitude,
+            declination, planet_rising_time)
+        # planet altitude at sunrise
+        planet_setting_altitude <- altitude_azimuth(latitude,
+            declination, planet_setting_time)
+        # planet altitude at sunset
         paste("Sunrise: ", time_to_hh_mm(rise_set$sunrise), "\nSunset: ",
-            time_to_hh_mm(rise_set$sunset))
+            time_to_hh_mm(rise_set$sunset), "\nPlanet Altitude At Sunrise: ",
+            round(planet_rising_altitude$altitude, 2), "\nPlanet Altitude At Sunset: ",
+            round(planet_setting_altitude$altitude, 2))
     })
 
     output$sunPosition <- renderText({
