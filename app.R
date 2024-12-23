@@ -229,15 +229,29 @@ server <- function(input, output) {
         latitude <- input$latitude
         elongation <- input$elongation
         declination <- planet_declination(date, elongation)
+        sun_declination_calculated <- sun_declination(date)
+        # calculated sun declination
         rise_set <- planet_rise_set(latitude, declination, elongation)
+        sun_rising_time <- rise_set$rise
+        # sun rising time
+        sun_setting_time <- rise_set$set
+        # sun setting time
+        sun_rising_altitude <- altitude_azimuth(latitude, sun_declination_calculated,
+            sun_rising_time)
+        # sun rising altitude
+        sun_setting_altitude <- altitude_azimuth(latitude, sun_declination_calculated,
+            sun_setting_time)
+        # sun setting altitude
         paste("Planet Rise: ", time_to_hh_mm(rise_set$rise),
-            "\nPlanet Set: ", time_to_hh_mm(rise_set$set))
+            "\nPlanet Set: ", time_to_hh_mm(rise_set$set), "\nSun Altitude At Rise: ",
+            round(sun_rising_altitude$altitude, 2), "\nSun Altitude At Set: ",
+            round(sun_setting_altitude$altitude, 2))
     })
 
     output$planetAltitudeAzimuth <- renderText({
         # planet altitude and azimuth output
         date <- input$date
-        time <- input$time + 24/360 * (longitude_to_right_ascension(planet_longitude(date,
+        time <- input$time - 24/360 * (longitude_to_right_ascension(planet_longitude(date,
             input$elongation)) - longitude_to_right_ascension(sun_longitude(date)))
         # adjust time based on planet right ascension and
         # sun right ascension
